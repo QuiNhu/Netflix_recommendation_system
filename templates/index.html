@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Recommendation Result</title>
+    <title>Your Movie Recommendation App</title>
 </head>
+
 <body>
     <div class="container">
-        <h1>Recommendation Result</h1>
-        <div class="recommendation">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Year</th>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Estimate_Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in recommendation %}
-                        <tr>
-                            <td>{{ row['Year'] }}</td>
-                            <td>{{ row['Name'] }}</td>
-                            <td><img src="{{ url_for('static', filename='movie_images/' ~ row['image']) }}" alt="{{ row['Name'] }}"></td>
-                            <td>{{ row['Estimate_Score'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <h1>Welcome to Your Movie Recommendation App</h1>
+        <form action="/result" method="post">
+            <label for="input_value">Select User/Movie:</label>
+            <select name="input_value" id="input_value">
+                {% for item in input_list %}
+                    <option>{{ item }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Get Recommendations">
+        </form>
     </div>
 </body>
+
 </html>
