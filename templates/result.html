@@ -4,33 +4,76 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #141414; /* Màu nền đen giống Netflix */
+            color: #ffffff; /* Màu chữ trắng */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #e50914;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none; /* Loại bỏ dấu đầu dòng của danh sách */
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap; /* Đảm bảo các phần tử con trên cùng một dòng */
+            justify-content: center;
+        }
+
+        li {
+            margin: 20px;
+            text-align: center;
+            flex: 0 0 calc(33.333% - 40px); /* Chia thành ba cột và để khoảng trắng giữa các cột là 20px */
+            box-sizing: border-box;
+            word-wrap: break-word; /* Cho phép xuống dòng nếu tên bộ phim quá dài */
+        }
+
+        img {
+            width: 100px;
+            height: 120px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        span {
+            display: block;
+            margin-top: 5px;
+        }
+
+    </style>
     <title>Recommendation Result</title>
 </head>
 <body>
     <div class="container">
         <h1>Recommendation Result</h1>
         <div class="recommendation">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Year</th>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Estimate_Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in recommendation %}
-                        <tr>
-                            <td>{{ row['Year'] }}</td>
-                            <td>{{ row['Name'] }}</td>
-                            <td><img src="{{ url_for('static', filename='movie_images/' ~ row['image']) }}" alt="{{ row['Name'] }}"></td>
-                            <td>{{ row['Estimate_Score'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <ul>
+                {% for row in recommendation %}
+                    <li>
+                        <img src="{{ url_for('static', filename='movie_images/' ~ row['image']) }}" alt="{{ row['Name'] }}">
+                        <span>{{ row['Name'] }}</span>
+                        <span>Year: {{ row['Year'] }} </span>
+                        <span>Score: {{ row['Estimate_Score'] }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </body>
