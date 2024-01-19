@@ -52,7 +52,7 @@ movie_title_list = ['8 Man', 'My Favorite Brunette', 'Lord of the Rings: The Ret
                     'Beyonce: Live at Wembley', 'Drowning on Dry Land', 'Lost in the Wild', 'Goddess of Mercy', 'Get Out Your Handkerchiefs']
 input_list = random.sample(user_list, 60) + movie_title_list
 
-def predict_movies_for_user(user_id, df_title, drop_movie_list, svd, top_n=10):
+def predict_movies_for_user(user_id, df_title, drop_movie_list, svd, top_n=12):
     user = df_title.copy().reset_index()
     user = user[~user['Movie_Id'].isin(drop_movie_list)]
     user['Estimate_Score'] = user['Movie_Id'].apply(lambda x: svd.predict(user_id, x).est)
@@ -65,7 +65,7 @@ def predict_movies_for_user(user_id, df_title, drop_movie_list, svd, top_n=10):
     return recommended_movies
 
 ### Recommend with Pearsons' correlations ## df_title, df_p, df_movie_summary
-def recommend(movie_title, min_count = 0):
+def recommend(movie_title):
     print("For movie ({})".format(movie_title))
     if len(df_title['Name'].str.lower() == movie_title.lower()) != 0:
       print("- Top 20 movies recommended based on Pearsons' correlation - ")
@@ -79,7 +79,7 @@ def recommend(movie_title, min_count = 0):
       corr_target = corr_target.drop('Cust_Id')
       corr_target.index = corr_target.index.map(int)
       corr_target = corr_target.join(df_title).join(df_movie_summary)[['Year', 'Name', 'image', 'Estimate_Score']]
-      return corr_target[:20]#.to_string(index=False)
+      return corr_target[:21]#.to_string(index=False)
     else:
       return f"We can't the {movie_title} film!!! SORRY!!"
 
@@ -95,7 +95,7 @@ def result():
 
     try:
         input_value = int(input_value)
-        recommended_movies = predict_movies_for_user(input_value, df_title, drop_movie_list, svd, top_n=10)
+        recommended_movies = predict_movies_for_user(input_value, df_title, drop_movie_list, svd)
         #print(recommended_movies)
         recommendation_data = recommended_movies.to_dict('records')
         return render_template('result.html', recommendation=recommendation_data)
